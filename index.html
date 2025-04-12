@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="img/logo.png" type="image/x-icon">
+  <title>LUNNA</title>
+  <link rel="stylesheet" href="css/style.css?v=2">
+  <script src="js/produtos.js" defer></script>
+  <script src="js/script.js" defer></script>
+</head>
+<body>
+
+  <!-- logo e nome -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="img/logo.png" alt="Logo da LUNNA" class="logo">
+      <h1>LUNNA 925</h1>
+    </div>
+
+    <!-- carrinho fixo -->
+    <button id="botaoCarrinho" onclick="abrirModal()">🛒</button>
+  </header>
+
+  <!-- busca e filtros -->
+  <input type="text" id="busca" placeholder="Buscar produto..." onkeyup="filtrarProdutos()">
+
+  <div class="filtros">
+    <label>Tipo:</label>
+    <select id="filtroTipo" onchange="filtrarProdutos()">
+      <option value="">Todos</option>
+      <option value="pulseira">Pulseiras</option>
+      <option value="anel">Anéis</option>
+      <option value="tornozeleira">Tornozeleiras</option>
+      <option value="bracelete">Braceletes</option>
+      <option value="colar">Colares</option>
+      <option value="infantil">Linha Infantil</option>
+      <option value="conjunto">Conjuntos</option>
+      <option value="brinco">Brincos</option>
+    </select>
+  </div>
+
+  <h2>Produtos</h2>
+  <div class="produtos-container" id="produtos"></div>
+
+  <!-- carrinho -->
+  <div id="modalCarrinho" class="modal">
+    <div class="modal-conteudo">
+      <div class="modal-header">
+        <h2>Seu Carrinho</h2>
+        <button class="fechar" onclick="fecharModal()">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="carrinho-vazio" id="carrinhoVazio">
+          <img src="img/empty-cart.png" alt="Carrinho Vazio" class="carrinho-vazio-img">
+          <p>Seu carrinho está vazio</p>
+          <button class="btn-continuar" onclick="fecharModal()">Continuar Comprando</button>
+        </div>
+        
+        <ul id="carrinho" class="lista-carrinho"></ul>
+      </div>
+      
+      <div class="modal-footer">
+        <div class="resumo-compra">
+          <div class="subtotal">
+            <span>Subtotal:</span>
+            <span id="total" class="valor-total">R$ 0,00</span>
+          </div>
+          <p class="info-frete">Frete calculado no checkout</p>
+        </div>
+        
+        <div class="acoes-carrinho">
+          <button class="btn-continuar" onclick="fecharModal()">Continuar Comprando</button>
+          <button class="btn-finalizar" onclick="finalizarCompra()">
+            <span class="icon-whatsapp">💬</span>
+            Finalizar no WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Notificação -->
+  <div id="notificacao" class="notificacao">
+    <span id="mensagemNotificacao">Item adicionado ao carrinho!</span>
+  </div>
+
+</body>
+</html>

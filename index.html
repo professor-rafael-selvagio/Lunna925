@@ -23,22 +23,38 @@
   </header>
 
   <!-- busca e filtros -->
-  <input type="text" id="busca" placeholder="Buscar produto..." onkeyup="filtrarProdutos()">
-
-  <div class="filtros">
-    <label>Tipo:</label>
-    <select id="filtroTipo" onchange="filtrarProdutos()">
-      <option value="">Todos</option>
-      <option value="pulseira">Pulseiras</option>
-      <option value="anel">Anéis</option>
-      <option value="tornozeleira">Tornozeleiras</option>
-      <option value="bracelete">Braceletes</option>
-      <option value="colar">Colares</option>
-      <option value="infantil">Linha Infantil</option>
-      <option value="conjunto">Conjuntos</option>
-      <option value="brinco">Brincos</option>
-    </select>
+  <div class="search-container">
+    <div class="search-box">
+      <i class="search-icon">🔍</i>
+      <input type="text" id="busca" placeholder="Buscar produtos..." onkeyup="filtrarProdutos()">
+      <button id="clear-search" class="clear-search-btn" onclick="limparBusca()">×</button>
+    </div>
+    
+    <div class="filters-container">
+      <div class="filter-group">
+        <label for="filtroTipo">Categoria:</label>
+        <div class="select-wrapper">
+          <select id="filtroTipo" onchange="filtrarProdutos()">
+            <option value="">Todos os itens</option>
+            <option value="pulseira">Pulseiras</option>
+            <option value="anel">Anéis</option>
+            <option value="tornozeleira">Tornozeleiras</option>
+            <option value="bracelete">Braceletes</option>
+            <option value="colar">Colares</option>
+            <option value="infantil">Linha Infantil</option>
+            <option value="conjunto">Conjuntos</option>
+            <option value="brinco">Brincos</option>
+          </select>
+          <i class="select-arrow">▼</i>
+        </div>
+      </div>
+      
+      <div class="filter-group">
+        <span id="resultado-busca">Mostrando todos os produtos</span>
+      </div>
+    </div>
   </div>
+  
 
   <h2>Produtos</h2>
   <div class="produtos-container" id="produtos"></div>

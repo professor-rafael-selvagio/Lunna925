@@ -138,29 +138,83 @@ function filtrarProdutos() {
   const termoBusca = document.getElementById('busca').value.toLowerCase();
   const tipoSelecionado = document.getElementById('filtroTipo').value;
 
+  // Exibir botão de limpar quando houver texto
+  const clearBtn = document.getElementById('clear-search');
+  if (termoBusca) {
+    clearBtn.style.display = 'block';
+  } else {
+    clearBtn.style.display = 'none';
+  }
+
   const container = document.getElementById('produtos');
   container.innerHTML = '';
 
-  produtos
-    .filter(produto => {
-      const nomeMatch = produto.nome.toLowerCase().includes(termoBusca);
-      const tipoMatch = !tipoSelecionado || produto.categoria === tipoSelecionado;
-      return nomeMatch && tipoMatch;
-    })
-    .forEach(produto => {
-      const div = document.createElement('div');
-      div.classList.add('produto');
+  // Filtrar produtos
+  const produtosFiltrados = produtos.filter(produto => {
+    const nomeMatch = produto.nome.toLowerCase().includes(termoBusca);
+    const tipoMatch = !tipoSelecionado || produto.categoria === tipoSelecionado;
+    return nomeMatch && tipoMatch;
+  });
+  
+  // Exibir produtos filtrados
+  produtosFiltrados.forEach(produto => {
+    const div = document.createElement('div');
+    div.classList.add('produto');
 
-      div.innerHTML = `
-        <img src="img/${produto.foto}" alt="${produto.nome}">
-        <h3>${produto.nome}</h3>
-        <p>${produto.valor_venda}</p>
-        <button id="add-${produto.nome}">Adicionar ao Carrinho</button>
-      `;
+    div.innerHTML = `
+      <div class="produto-card">
+        <div class="produto-imagem-container">
+          <img src="img/${produto.foto}" alt="${produto.nome}" class="produto-imagem">
+          <div class="produto-overlay">
+            <button id="add-${produto.nome}" class="btn-adicionar">
+              <span class="icone-carrinho">🛒</span>
+              Adicionar ao Carrinho
+            </button>
+          </div>
+        </div>
+        
+        <div class="produto-info">
+          <h3 class="produto-nome">${produto.nome}</h3>
+          <div class="produto-detalhes">
+            <span class="produto-preco">${produto.valor_venda}</span>
+            ${produto.tamanhos ? `<span class="produto-tamanhos">Tamanhos: ${produto.tamanhos.join(', ')}</span>` : ''}
+          </div>
+          <span class="produto-categoria">${produto.categoria}</span>
+        </div>
+      </div>
+    `;
 
-      div.querySelector('button').onclick = () => adicionarAoCarrinho(produto.nome);
-      container.appendChild(div);
-    });
+    div.querySelector('.btn-adicionar').onclick = () => adicionarAoCarrinho(produto.nome);
+    container.appendChild(div);
+  });
+  
+  // Atualizar texto de resultado
+  atualizarResultadoBusca(produtosFiltrados.length, termoBusca, tipoSelecionado);
+}
+
+// Função para mostrar resultado da busca
+function atualizarResultadoBusca(quantidade, termo, tipo) {
+  const mensagemEl = document.getElementById('resultado-busca');
+  
+  if (quantidade === 0) {
+    mensagemEl.textContent = 'Nenhum produto encontrado';
+    return;
+  }
+  
+  let mensagem = `Encontrado${quantidade > 1 ? 's' : ''} ${quantidade} produto${quantidade > 1 ? 's' : ''}`;
+  
+  // Adicionar termos de filtro à mensagem
+  if (termo && tipo) {
+    const tipoTexto = document.querySelector(`#filtroTipo option[value="${tipo}"]`).textContent;
+    mensagem += ` de "${tipoTexto}" contendo "${termo}"`;
+  } else if (termo) {
+    mensagem += ` contendo "${termo}"`;
+  } else if (tipo) {
+    const tipoTexto = document.querySelector(`#filtroTipo option[value="${tipo}"]`).textContent;
+    mensagem += ` de "${tipoTexto}"`;
+  }
+  
+  mensagemEl.textContent = mensagem;
 }
 
 function abrirModal() {
@@ -260,3 +314,9 @@ function atualizarCarrinho() {
     botaoCarrinho.setAttribute('data-count', carrinhoNomes.length);
   }
 }
+
+function limparBusca() {
+  document.getElementById('busca').value = '';
+  filtrarProdutos();
+}
+
